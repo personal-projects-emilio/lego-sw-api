@@ -1,11 +1,14 @@
-import express, { Application } from 'express';
 import chalk from 'chalk';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import express from 'express';
 import morgan from 'morgan';
 import path from 'path';
 import rateLimit from 'express-rate-limit';
-import connectDB from './config/database';
+
+import { minifigs } from 'routes';
+import connectDB from 'config/database';
+import errorHandler from 'middleware/errorHandler';
 
 // Load env vars
 dotenv.config({ path: path.resolve(__dirname, 'config/config.env') })
@@ -13,7 +16,7 @@ dotenv.config({ path: path.resolve(__dirname, 'config/config.env') })
 // Connect to database
 connectDB();
 
-const app: Application = express();
+const app = express();
 
 // Body parser
 app.use(express.json());
@@ -35,6 +38,11 @@ app.use(cors());
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Mount routers
+app.use('/api/v1/minifigs', minifigs);
+
+app.use(errorHandler);
 
 const PORT = parseInt(process.env.PORT) || 5000;
 
