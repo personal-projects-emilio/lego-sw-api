@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { createMinifig, deleteMinifig, getMinifig, getMinifigs, partialUpdateMinifig, updateMinifig } from 'controllers/minifigs';
+import advancedResults from 'middleware/advancedResults';
+import Minifig from 'models/Minifig';
 
 /**
  * Router for minifigs
@@ -7,8 +9,14 @@ import { createMinifig, deleteMinifig, getMinifig, getMinifigs, partialUpdateMin
  */
 const router = Router();
 
-router.route('/').get(getMinifigs).post(createMinifig);
+router.route('/')
+  .get(advancedResults(Minifig), getMinifigs)
+  .post(createMinifig);
 
-router.route('/:id').get(getMinifig).delete(deleteMinifig).put(updateMinifig).patch(partialUpdateMinifig);
+router.route('/:id')
+  .get(getMinifig)
+  .delete(deleteMinifig)
+  .put(updateMinifig)
+  .patch(partialUpdateMinifig);
 
 export default router;
