@@ -1,14 +1,13 @@
 import chalk from 'chalk';
-import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 import morgan from 'morgan';
 import path from 'path';
-import rateLimit from 'express-rate-limit';
 
 import mountRouters from 'routes';
 import connectDB from 'config/database';
 import errorHandler from 'middleware/errorHandler';
+import implementSecurityRules from 'utils/security';
 
 // Load env vars
 dotenv.config({ path: path.resolve(__dirname, 'config/config.env') })
@@ -26,15 +25,8 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 10 * 60 * 1000, // 10 mins
-  max: 100
-});
-app.use(limiter);
-
-// Enable CORS
-app.use(cors());
+// Implement basic security rules for the API
+implementSecurityRules(app);
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
