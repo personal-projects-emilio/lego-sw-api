@@ -1,3 +1,5 @@
+declare module 'xss-clean';
+
 namespace NodeJS {
   interface ProcessEnv {
     NODE_ENV: string;
