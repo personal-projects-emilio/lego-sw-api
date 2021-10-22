@@ -5,3 +5,13 @@ namespace NodeJS {
     MONGO_URI: string;
   }
 }
+
+namespace Express {
+  interface Response {
+    advancedResults?: {
+      success: boolean,
+      pagination: Pagination,
+      data: any[]
+    }
+  }
+}

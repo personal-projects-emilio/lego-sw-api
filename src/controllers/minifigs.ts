@@ -8,11 +8,7 @@ import ErrorResponse from 'utils/errorResponse';
  * @access Public
  */
 export const getMinifigs = asyncHandler(async (_req, res, _next) => {
-  const minifigs = await Minifig.find().sort({ _id: 'asc' });
-  res.status(200).json({
-    success: true,
-    data: minifigs
-  })
+  res.status(200).json(res.advancedResults);
 })
 
 /**
@@ -21,13 +17,13 @@ export const getMinifigs = asyncHandler(async (_req, res, _next) => {
  * @access Public
  */
 export const getMinifig = asyncHandler(async (req, res, next) => {
-  const minifig = await Minifig.findById(req.params.id);
-  if (!minifig) {
+  const existingMinifig = await Minifig.findById(req.params.id);
+  if (!existingMinifig) {
     return next(new ErrorResponse(404, `Minifig not found with id of ${req.params.id}`));
   }
   res.status(200).json({
     success: true,
-    data: minifig
+    data: existingMinifig
   })
 })
 
@@ -42,6 +38,7 @@ export const createMinifig = asyncHandler(async (req, res, next) => {
   if (existingMinifig) {
     return next(new ErrorResponse(404, `Minifig with id of ${req.params.id} already exists`));
   }
+
   const { id, ...body } = req.body;
   const newMinifig = await Minifig.create({ ...body, _id: id });
 

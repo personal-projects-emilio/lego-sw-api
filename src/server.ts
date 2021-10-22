@@ -6,7 +6,7 @@ import morgan from 'morgan';
 import path from 'path';
 import rateLimit from 'express-rate-limit';
 
-import { minifigs } from 'routes';
+import mountRouters from 'routes';
 import connectDB from 'config/database';
 import errorHandler from 'middleware/errorHandler';
 
@@ -40,7 +40,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Mount routers
-app.use('/api/v1/minifigs', minifigs);
+mountRouters(app);
 
 app.use(errorHandler);
 
