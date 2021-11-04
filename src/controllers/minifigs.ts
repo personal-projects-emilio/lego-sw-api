@@ -1,13 +1,25 @@
 import Minifig from 'models/Minifig';
 import asyncHandler from 'middleware/asyncHandler';
 import ErrorResponse from 'utils/errorResponse';
+import { getStatistics, getTagsAndCharacNames } from 'utils/minifigs';
 
 /**
  * Get all minifigs
  * @route GET /api/v1/minifigs
  * @access Public
  */
-export const getMinifigs = asyncHandler(async (_req, res, _next) => {
+export const getMinifigs = asyncHandler(async (req, res, _next) => {
+  if (req.query.withTagsAndCharacterNameStat) {
+    const minifigs = await Minifig.find();
+    return res.status(200).json({
+      ...res.advancedResults,
+      data: {
+        list: res.advancedResults?.data,
+        ...getStatistics(minifigs),
+        ...getTagsAndCharacNames(minifigs),
+      }
+    })
+  }
   res.status(200).json(res.advancedResults);
 })
 
