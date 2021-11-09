@@ -37,7 +37,7 @@ const MinifigSchema = new Schema<Minifig>({
     versionKey: false,
     virtuals: true,
     transform: (_, ret) => { delete ret._id }
-  },
+  }
 })
 
 const MinifigModel = model<Minifig>('Minifig', MinifigSchema);

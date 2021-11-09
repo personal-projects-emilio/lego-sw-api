@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import express from 'express';
 import morgan from 'morgan';
@@ -19,6 +20,9 @@ const app = express();
 
 // Body parser
 app.use(express.json());
+
+// Cookie parser
+app.use(cookieParser());
 
 // Dev logging middleware
 if (process.env.NODE_ENV === 'development') {
