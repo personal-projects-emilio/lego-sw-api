@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Query } from 'mongoose';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
@@ -16,13 +16,6 @@ const UserSchema = new Schema<User>({
       'Please add a valid email',
     ],
     lowercase: true,
-    index: {
-      unique: true,
-      collation: {
-        locale: 'en',
-        strength: 2
-      }
-    }
   },
   role: {
     type: String,
@@ -49,10 +42,21 @@ const UserSchema = new Schema<User>({
   }
 });
 
-// Encrypt password using bcrypt
+// Encrypt password using bcrypt at creation
 UserSchema.pre('save', async function (next) {
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
+
+
+// Encrypt password using bcrypt at admin update
+UserSchema.pre('findOneAndUpdate', async function (next) {
+  let update = this.getUpdate() as ITUserModel;
+  if (!update) next()
+  const salt = await bcrypt.genSalt(10);
+  update.password = await bcrypt.hash(update.password, salt);
+  this.setUpdate(update);
   next();
 });
 

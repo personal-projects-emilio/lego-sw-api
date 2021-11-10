@@ -1,5 +1,6 @@
 import asyncHandler from "middleware/asyncHandler";
 import User from "models/User";
+import ErrorResponse from "utils/errorResponse";
 
 
 /**
@@ -17,8 +18,12 @@ export const getUsers = asyncHandler(async (_req, res, _next) => {
  * @route GET /api/v1/users/:id
  * @access Private/Admin
  */
-export const getUser = asyncHandler(async (req, res, _next) => {
+export const getUser = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(new ErrorResponse(404, `User not found with id of ${req.params.id}`));
+  }
 
   res.status(200).json({
     success: true,
@@ -47,8 +52,14 @@ export const createUser = asyncHandler(async (req, res, _next) => {
  * @route PUT /api/v1/users
  * @access Private/Admin
  */
-export const updateUser = asyncHandler(async (req, res, _next) => {
-  const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+export const updateUser = asyncHandler(async (req, res, next) => {
+  let user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(new ErrorResponse(404, `User not found with id of ${req.params.id}`))
+  }
+
+  user = await User.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
     overwrite: true

@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { getUsers, createUser, getUser, updateUser, deleteUser } from 'controllers/users';
 import advancedResults from 'middleware/advancedResults';
 import User from 'models/User';
-// import {protect, authorize} from 'middleware/auth';
+import { protect, authorize } from 'middleware/auth';
 
 /**
  * Router for users
@@ -10,8 +10,8 @@ import User from 'models/User';
  */
 const router = Router();
 
-// router.use(protect);
-// router.use(authorize('admin'));
+router.use(protect);
+router.use(authorize('admin'));
 
 
 router

@@ -19,4 +19,8 @@ namespace Express {
       data: any[]
     }
   }
+
+  interface Request {
+    user?: ITUserModel | null;
+  }
 }
