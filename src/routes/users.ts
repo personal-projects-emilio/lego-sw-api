@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { getUsers, createUser, getUser, updateUser, deleteUser } from 'controllers/users';
+import { protect, authorize } from 'middleware/auth';
 import advancedResults from 'middleware/advancedResults';
 import User from 'models/User';
-import { protect, authorize } from 'middleware/auth';
 
 /**
  * Router for users
