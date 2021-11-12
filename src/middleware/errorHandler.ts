@@ -9,27 +9,29 @@ const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
   console.log(err);
 
   // Mongoose bad ObjectId
-  if (err.name === 'CastError') {
+  if (err.name === "CastError") {
     const message = `Resource not found`;
     error = new ErrorResponse(404, message);
   }
 
   // Mongoose duplicate key
   if (err.code === 11000) {
-    const message = 'Duplicate field value entered';
+    const message = "Duplicate field value entered";
     error = new ErrorResponse(400, message);
   }
 
   // Mongoose validation error
-  if (err.name === 'ValidationError') {
-    const message = Object.values(err.errors).map((val: any) => val.message).join(' ');
+  if (err.name === "ValidationError") {
+    const message = Object.values(err.errors)
+      .map((val: any) => val.message)
+      .join(" ");
     error = new ErrorResponse(400, message);
   }
 
   res.status(error.statusCode || 500).json({
     success: false,
-    error: error.message || 'Server Error'
+    error: error.message || "Server Error",
   });
-}
+};
 
 export default errorHandler;

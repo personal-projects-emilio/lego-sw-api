@@ -4,8 +4,10 @@
   "description": "Api to manage my Lego Star Wars collection",
   "main": "server.ts",
   "scripts": {
-    "start": "NODE_ENV=production node src/server",
-    "dev": "nodemon src/server"
+    "start": "cross-env NODE_ENV=production npm run build node ./dist/src/server",
+    "dev": "nodemon src/server",
+    "build": "npx tsc",
+    "prepare": "husky install"
   },
   "keywords": [
     "lego",
@@ -24,12 +26,12 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-mongo-sanitize": "^2.1.0",
-    "express-rate-limit": "^5.5.0",
+    "express-rate-limit": "^5.5.1",
     "helmet": "^4.6.0",
     "hpp": "^0.2.3",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.0.11",
-    "webpack": "^5.59.0",
+    "mongoose": "^6.0.12",
+    "webpack": "^5.64.0",
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
@@ -41,10 +43,19 @@
     "@types/hpp": "^0.2.2",
     "@types/jsonwebtoken": "^8.5.5",
     "@types/morgan": "^1.9.3",
-    "@types/node": "^16.11.1",
+    "@types/node": "^16.11.7",
+    "@typescript-eslint/eslint-plugin": "^5.3.1",
+    "@typescript-eslint/parser": "^5.3.1",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.2.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^11.2.6",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.13",
-    "ts-node": "^10.3.0",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.4.1",
+    "ts-node": "^10.4.0",
     "tsconfig-paths": "^3.11.0",
     "typescript": "^4.4.4"
   },
@@ -54,5 +65,8 @@
     ],
     "ext": "ts, json",
     "exec": "ts-node --files -r tsconfig-paths/register src/server.ts"
+  },
+  "lint-staged": {
+    "*.ts": "eslint --cache --fix"
   }
 }

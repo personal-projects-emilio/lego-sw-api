@@ -1,7 +1,7 @@
-import Minifig from 'models/Minifig';
-import asyncHandler from 'middleware/asyncHandler';
-import ErrorResponse from 'utils/errorResponse';
-import { getStatistics, getTagsAndCharacNames } from 'utils/minifigs';
+import Minifig from "models/Minifig";
+import asyncHandler from "middleware/asyncHandler";
+import ErrorResponse from "utils/errorResponse";
+import { getStatistics, getTagsAndCharacNames } from "utils/minifigs";
 
 /**
  * Get all minifigs
@@ -17,11 +17,11 @@ export const getMinifigs = asyncHandler(async (req, res, _next) => {
         list: res.advancedResults?.data,
         ...getStatistics(minifigs),
         ...getTagsAndCharacNames(minifigs),
-      }
-    })
+      },
+    });
   }
   res.status(200).json(res.advancedResults);
-})
+});
 
 /**
  * Get single minifig by id
@@ -31,13 +31,15 @@ export const getMinifigs = asyncHandler(async (req, res, _next) => {
 export const getMinifig = asyncHandler(async (req, res, next) => {
   const existingMinifig = await Minifig.findById(req.params.id);
   if (!existingMinifig) {
-    return next(new ErrorResponse(404, `Minifig not found with id of ${req.params.id}`));
+    return next(
+      new ErrorResponse(404, `Minifig not found with id of ${req.params.id}`)
+    );
   }
   res.status(200).json({
     success: true,
-    data: existingMinifig
-  })
-})
+    data: existingMinifig,
+  });
+});
 
 /**
  * Create a new minifig
@@ -48,7 +50,12 @@ export const createMinifig = asyncHandler(async (req, res, next) => {
   // Check for existing minifig
   const existingMinifig = await Minifig.findById(req.params.id);
   if (existingMinifig) {
-    return next(new ErrorResponse(404, `Minifig with id of ${req.params.id} already exists`));
+    return next(
+      new ErrorResponse(
+        404,
+        `Minifig with id of ${req.params.id} already exists`
+      )
+    );
   }
 
   const { id, ...body } = req.body;
@@ -56,7 +63,7 @@ export const createMinifig = asyncHandler(async (req, res, next) => {
 
   res.status(201).json({
     success: true,
-    data: newMinifig
+    data: newMinifig,
   });
 });
 
@@ -74,11 +81,15 @@ export const updateMinifig = asyncHandler(async (req, res, next) => {
     );
   }
 
-  minifig = await Minifig.findByIdAndUpdate(req.params.id, { ...req.body, _id: req.params.id }, {
-    new: true,
-    runValidators: true,
-    overwrite: true,
-  });
+  minifig = await Minifig.findByIdAndUpdate(
+    req.params.id,
+    { ...req.body, _id: req.params.id },
+    {
+      new: true,
+      runValidators: true,
+      overwrite: true,
+    }
+  );
 
   res.status(200).json({ success: true, data: minifig });
 });

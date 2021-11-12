@@ -1,4 +1,4 @@
-declare module 'xss-clean';
+declare module "xss-clean";
 
 namespace NodeJS {
   interface ProcessEnv {
@@ -14,10 +14,10 @@ namespace NodeJS {
 namespace Express {
   interface Response {
     advancedResults?: {
-      success: boolean,
-      pagination: Pagination,
-      data: any[]
-    }
+      success: boolean;
+      pagination: Pagination;
+      data: any[];
+    };
   }
 
   interface Request {
