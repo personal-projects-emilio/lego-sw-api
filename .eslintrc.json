@@ -3,7 +3,7 @@
   "ignorePatterns": [],
   "overrides": [
     {
-      "files": ["*.ts", "*.json"],
+      "files": ["*.ts"],
       "parserOptions": {
         "project": ["tsconfig.json"],
         "createDefaultProgram": true
